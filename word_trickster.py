@@ -12,11 +12,8 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 @ask.launch
 def new_game():
 
-    ##################################################################################################
     total = 34
-    ##################################################################################################
     l = []
-    #make better
     for i in range(1,total+1):
         l.append(i)
     session.attributes['t'] = total
@@ -41,8 +38,6 @@ def next_round():
         while number == int(session.attributes['current_q']):
             number = ran_no()
             t += 1
-
-            #### CHECK ####
             if t==session.attributes['t']:
                 session.attributes['current_q'] = -1
                 return question("Sorry I cannot change the question since this is the last question of the game, you need to answer it to win it. Do you want to play?").reprompt("You are so close to defeating the word trickster! Don't give up now, come on, do you want to try the last question? ")
@@ -57,7 +52,6 @@ def next_round():
     round_msg += " The clues are "
     for h in hint[:-1]:
         round_msg += (h + ", ") 
-    #round_msg = round_msg [:-2]
     round_msg += "and " + hint[-1]
     session.attributes['ans'] = answer
     return question(round_msg).reprompt("Hey, you there? "+round_msg)
@@ -68,8 +62,6 @@ def ran_no():
         return -1
     n = randint(0,len(l)-1)
     t = l[n]
-    #session.attributes['current_q'] = t
-    #l.remove(t)
     return t
 
 @ask.intent("AnswerIntent", convert={'ans': str})
@@ -115,7 +107,6 @@ def score():
 
 @ask.intent("AMAZON.FallbackIntent")
 def fallback():
-    #print("fallback")
     session.attributes['ans'] = " "
     return question("I am not sure what you mean. Do you want to keep playing ?").reprompt("Knock knock, hello there, do you want to keep playing ? ") 
 
@@ -128,11 +119,6 @@ def stop():
 def cancel():
     print("Cancel")
     return statement("Okay. Goodbye") 
-
-#@ask.intent("StopUs")
-#def stopus():
-#    print("StopUs")
-#    return statement("Okay. Goodbye") 
 
 @ask.intent("AMAZON.HelpIntent")
 def help():
